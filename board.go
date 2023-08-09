@@ -14,7 +14,10 @@ const (
 	cell_thickness = 2
 )
 
-var BOARD_SIZE = int32(math.Min(float64(SCREEN_WIDTH), float64(SCREEN_HEIGHT))) - padding
+var (
+	BOARD_SIZE         = int32(math.Min(float64(SCREEN_WIDTH), float64(SCREEN_HEIGHT))) - padding
+	tile_did_move bool = false
+)
 
 type BoardMotion int32
 
@@ -91,22 +94,30 @@ func (board *Board) MoveTiles() {
 	if move_count >= MAX_MOVE_COUNT {
 		move_count = 0
 		board.Motion = MotionNone
-		board.SpawnTile()
+		if tile_did_move {
+			board.SpawnTile()
+			tile_did_move = false
+		}
 	} else {
 		move_count++
 		if board.Motion == MotionLeft || board.Motion == MotionUp {
 			for c := 0; c < board.CellCount; c++ {
 				for r := 0; r < board.CellCount; r++ {
+					if board.Array[c][r].Value == 0 {
+						continue
+					}
 					switch board.Motion {
 					case MotionLeft:
 						{
 							if c-1 >= 0 && board.Array[c-1][r].Value == 0 {
 								board.Array[c-1][r].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
+								tile_did_move = true
 							} else if c-1 >= 0 && board.Array[c-1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c-1][r].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c-1][r].CanAdd = false
+								tile_did_move = true
 							}
 						}
 					case MotionUp:
@@ -114,10 +125,12 @@ func (board *Board) MoveTiles() {
 							if r-1 >= 0 && board.Array[c][r-1].Value == 0 {
 								board.Array[c][r-1].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
+								tile_did_move = true
 							} else if r-1 >= 0 && board.Array[c][r-1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c][r-1].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c][r-1].CanAdd = false
+								tile_did_move = true
 							}
 						}
 					}
@@ -126,16 +139,21 @@ func (board *Board) MoveTiles() {
 		} else if board.Motion == MotionRight || board.Motion == MotionDown {
 			for c := board.CellCount - 1; c >= 0; c-- {
 				for r := board.CellCount - 1; r >= 0; r-- {
+					if board.Array[c][r].Value == 0 {
+						continue
+					}
 					switch board.Motion {
 					case MotionRight:
 						{
 							if c+1 < board.CellCount && board.Array[c+1][r].Value == 0 {
 								board.Array[c+1][r].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
+								tile_did_move = true
 							} else if c+1 < board.CellCount && board.Array[c+1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c+1][r].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c+1][r].CanAdd = false
+								tile_did_move = true
 							}
 						}
 					case MotionDown:
@@ -143,10 +161,12 @@ func (board *Board) MoveTiles() {
 							if r+1 < board.CellCount && board.Array[c][r+1].Value == 0 {
 								board.Array[c][r+1].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
+								tile_did_move = true
 							} else if r+1 < board.CellCount && board.Array[c][r+1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c][r+1].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c][r+1].CanAdd = false
+								tile_did_move = true
 							}
 						}
 					}
