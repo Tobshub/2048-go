@@ -22,10 +22,14 @@ type Board struct {
 
 func (b *Board) Init() {
 	new_array := make([][]Tile, b.CellCount)
-	for i := 0; i < b.CellCount; i++ {
-		new_array[i] = make([]Tile, b.CellCount)
-		for j := 0; j < b.CellCount; j++ {
-			new_array[i][j] = Tile{Value: 0}
+	for r := 0; r < b.CellCount; r++ {
+		new_array[r] = make([]Tile, b.CellCount)
+		for c := 0; c < b.CellCount; c++ {
+			if (r == 1 && c == 1) || (r == 3 && c == 3) {
+				new_array[r][c] = Tile{Value: 2}
+			} else {
+				new_array[r][c] = Tile{Value: 0}
+			}
 		}
 	}
 	b.Array = new_array
@@ -41,7 +45,7 @@ func (board *Board) Draw() {
 	rl.DrawRectangleLinesEx(board_rect, board_thickness, rl.Black)
 
 	cell_size := float32(BOARD_SIZE-board_thickness/4) / float32(board.CellCount) // account for board borders
-	cell_border_offset := float32(cell_thickness) / 4
+	cell_border_offset := float32(cell_thickness) / 8
 
 	// draw cell
 	for r := 0; r < board.CellCount; r++ {
@@ -55,13 +59,17 @@ func (board *Board) Draw() {
 
 			// draw tile with value
 			if board.Array[r][c].Value != 0 {
-				tile := &board.Array[r][c]
-
-				tile.X = cell_x + cell_border_offset*2
-				tile.Y = cell_y + cell_border_offset*2
-
-				tile.Draw(cell_size - cell_border_offset)
+				DrawTileInCell(&board.Array[r][c], cell_x, cell_y, cell_size, cell_border_offset)
 			}
 		}
 	}
+}
+
+func DrawTileInCell(tile *Tile, cell_x float32, cell_y float32, cell_size float32, cell_border_offset float32) {
+	tile_offset := cell_border_offset * 4
+
+	tile.X = cell_x + tile_offset
+	tile.Y = cell_y + tile_offset
+
+	tile.Draw(cell_size - tile_offset*3)
 }
