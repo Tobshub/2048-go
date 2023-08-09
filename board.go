@@ -25,7 +25,7 @@ func (b *Board) Init() {
 	for i := 0; i < b.CellCount; i++ {
 		new_array[i] = make([]Tile, b.CellCount)
 		for j := 0; j < b.CellCount; j++ {
-			new_array[i][j] = Tile{Value: 1}
+			new_array[i][j] = Tile{Value: 0}
 		}
 	}
 	b.Array = new_array
@@ -40,7 +40,7 @@ func (board *Board) Draw() {
 	// draw board
 	rl.DrawRectangleLinesEx(board_rect, board_thickness, rl.Black)
 
-	cell_size := float32(BOARD_SIZE-board_thickness) / float32(board.CellCount) // account for board borders
+	cell_size := float32(BOARD_SIZE-board_thickness/4) / float32(board.CellCount) // account for board borders
 	cell_border_offset := float32(cell_thickness) / 4
 
 	// draw cell
@@ -53,6 +53,7 @@ func (board *Board) Draw() {
 			cell := rl.NewRectangle(cell_x, cell_y, float32(cell_size), float32(cell_size))
 			rl.DrawRectangleLinesEx(cell, cell_thickness, rl.Black)
 
+			// draw tile with value
 			if board.Array[r][c].Value != 0 {
 				tile := &board.Array[r][c]
 
