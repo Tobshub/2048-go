@@ -2,6 +2,7 @@ package main
 
 import (
 	"math"
+	"math/rand"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
@@ -46,6 +47,33 @@ func (b *Board) Init() {
 	b.Array = new_array
 }
 
+func (board *Board) SpawnTile() {
+	pow := float64(rand.Intn(2))
+
+	spawn_val := 2 * math.Pow(2, pow)
+
+	var empty_cell_idx [][]int = [][]int{} // []c,r
+
+	for c := 0; c < board.CellCount; c++ {
+		for r := 0; r < board.CellCount; r++ {
+			if board.Array[c][r].Value == 0 {
+				empty_cell_idx = append(empty_cell_idx, []int{c, r})
+			}
+		}
+	}
+
+	empty_cell_count := len(empty_cell_idx)
+
+	if empty_cell_count >= 1 {
+		rand_empty_cell_idx := rand.Intn(empty_cell_count)
+
+		c := empty_cell_idx[rand_empty_cell_idx][0]
+		r := empty_cell_idx[rand_empty_cell_idx][1]
+
+		board.Array[c][r].Value = int(spawn_val)
+	}
+}
+
 var move_count = 0
 
 const MAX_MOVE_COUNT = 3
@@ -54,6 +82,7 @@ func (board *Board) MoveTiles() {
 	if move_count >= MAX_MOVE_COUNT {
 		move_count = 0
 		board.Motion = MotionNone
+		board.SpawnTile()
 	} else {
 		move_count++
 		if board.Motion == MotionLeft || board.Motion == MotionUp {
