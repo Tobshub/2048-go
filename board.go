@@ -54,13 +54,13 @@ func (board *Board) SpawnTile() {
 
 	var empty_cell_idx [][]int = [][]int{} // []c,r
 
-	SCORE = 0
+	Score = 0
 	for c := 0; c < board.CellCount; c++ {
 		for r := 0; r < board.CellCount; r++ {
 			// reset CanAdd for all tiles
 			board.Array[c][r].CanAdd = true
 			// make score sum of all tiles
-			SCORE += board.Array[c][r].Value
+			Score += board.Array[c][r].Value
 
 			// filter empty cells
 			if board.Array[c][r].Value == 0 {
@@ -78,6 +78,8 @@ func (board *Board) SpawnTile() {
 		r := empty_cell_idx[rand_empty_cell_idx][1]
 
 		board.Array[c][r].Value = int(spawn_val)
+	} else {
+		HasLost = true
 	}
 }
 

@@ -9,13 +9,22 @@ import (
 const (
 	SCREEN_WIDTH  = 800
 	SCREEN_HEIGHT = 640
+
+	large_font_size  = 36
+	medium_font_size = 28
+	small_font_size  = 24
 )
 
 var BOARD Board
 
-var SCORE int
+var (
+	Score   int
+	HasLost bool = false
+)
 
 func InitGame() {
+	Score = 0
+	HasLost = false
 	BOARD = Board{
 		CellCount: 4,
 		Motion:    MotionNone,
@@ -25,14 +34,28 @@ func InitGame() {
 
 func DrawGame() {
 	BOARD.Draw()
-	rl.DrawText(fmt.Sprintf("Score: %d", SCORE), 10, 10, 24, rl.DarkGray)
+	rl.DrawText(fmt.Sprintf("Score: %d", Score), 10, 10, medium_font_size, rl.DarkGray)
+
+	if HasLost {
+		game_over_text := "GAME OVER! YOU HAVE NO MORE MOVES."
+		restart_instructions := "press [ENTER] to restart."
+
+		rl.DrawText(game_over_text, SCREEN_WIDTH/2-rl.MeasureText(game_over_text, large_font_size)/2, SCREEN_HEIGHT/2-large_font_size, large_font_size, rl.Red)
+		rl.DrawText(restart_instructions, SCREEN_WIDTH/2-rl.MeasureText(restart_instructions, small_font_size)/2, SCREEN_HEIGHT/2+small_font_size, small_font_size, rl.DarkGray)
+	}
 }
 
 func UpdateGame() {
-	BOARD.Update()
+	if HasLost {
+		if rl.IsKeyPressed(rl.KeyEnter) {
+			InitGame()
+		}
+	} else {
+		BOARD.Update()
 
-	if BOARD.Motion != MotionNone {
-		BOARD.MoveTiles()
+		if BOARD.Motion != MotionNone {
+			BOARD.MoveTiles()
+		}
 	}
 }
 
