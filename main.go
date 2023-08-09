@@ -12,6 +12,7 @@ var BOARD Board
 func InitGame() {
 	BOARD = Board{
 		CellCount: 4,
+		Motion:    MotionNone,
 	}
 	BOARD.Init()
 }
@@ -21,6 +22,11 @@ func DrawGame() {
 }
 
 func UpdateGame() {
+	BOARD.Update()
+
+	if BOARD.Motion != MotionNone {
+		BOARD.MoveTiles()
+	}
 }
 
 func main() {
