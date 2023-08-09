@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	padding         = 40
+	padding         = 100
 	board_thickness = 4
 
 	cell_thickness = 2
@@ -54,10 +54,15 @@ func (board *Board) SpawnTile() {
 
 	var empty_cell_idx [][]int = [][]int{} // []c,r
 
+	SCORE = 0
 	for c := 0; c < board.CellCount; c++ {
 		for r := 0; r < board.CellCount; r++ {
 			// reset CanAdd for all tiles
 			board.Array[c][r].CanAdd = true
+			// make score sum of all tiles
+			SCORE += board.Array[c][r].Value
+
+			// filter empty cells
 			if board.Array[c][r].Value == 0 {
 				empty_cell_idx = append(empty_cell_idx, []int{c, r})
 			}

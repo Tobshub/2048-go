@@ -1,6 +1,10 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"fmt"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 const (
 	SCREEN_WIDTH  = 800
@@ -8,6 +12,8 @@ const (
 )
 
 var BOARD Board
+
+var SCORE int
 
 func InitGame() {
 	BOARD = Board{
@@ -19,6 +25,7 @@ func InitGame() {
 
 func DrawGame() {
 	BOARD.Draw()
+	rl.DrawText(fmt.Sprintf("Score: %d", SCORE), 10, 10, 24, rl.DarkGray)
 }
 
 func UpdateGame() {
