@@ -9,6 +9,12 @@ import (
 type Tile struct {
 	X, Y  float32
 	Value int
+	// if tile value becomes eligible to add during the move
+	// tile gets added; which is unwanted behaviour
+	//
+	// CanAdd is needed to avoid this behaviour
+	// and make sure a tile has only been added to once
+	CanAdd bool
 }
 
 func (tile *Tile) Draw(size float32) {

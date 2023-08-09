@@ -38,9 +38,9 @@ func (b *Board) Init() {
 		new_array[c] = make([]Tile, b.CellCount)
 		for r := 0; r < b.CellCount; r++ {
 			if (c == 1 && r == 1) || (c == 3 && r == 3) || (c == 1 && r == 3) {
-				new_array[c][r] = Tile{Value: 2}
+				new_array[c][r] = Tile{Value: 2, CanAdd: true}
 			} else {
-				new_array[c][r] = Tile{Value: 0}
+				new_array[c][r] = Tile{Value: 0, CanAdd: true}
 			}
 		}
 	}
@@ -56,6 +56,8 @@ func (board *Board) SpawnTile() {
 
 	for c := 0; c < board.CellCount; c++ {
 		for r := 0; r < board.CellCount; r++ {
+			// reset CanAdd for all tiles
+			board.Array[c][r].CanAdd = true
 			if board.Array[c][r].Value == 0 {
 				empty_cell_idx = append(empty_cell_idx, []int{c, r})
 			}
@@ -94,9 +96,10 @@ func (board *Board) MoveTiles() {
 							if c-1 >= 0 && board.Array[c-1][r].Value == 0 {
 								board.Array[c-1][r].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
-							} else if c-1 >= 0 && board.Array[c-1][r].Value == board.Array[c][r].Value {
+							} else if c-1 >= 0 && board.Array[c-1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c-1][r].Value *= 2
 								board.Array[c][r].Value = 0
+								board.Array[c-1][r].CanAdd = false
 							}
 						}
 					case MotionUp:
@@ -104,9 +107,10 @@ func (board *Board) MoveTiles() {
 							if r-1 >= 0 && board.Array[c][r-1].Value == 0 {
 								board.Array[c][r-1].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
-							} else if r-1 >= 0 && board.Array[c][r-1].Value == board.Array[c][r].Value {
+							} else if r-1 >= 0 && board.Array[c][r-1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c][r-1].Value *= 2
 								board.Array[c][r].Value = 0
+								board.Array[c][r-1].CanAdd = false
 							}
 						}
 					}
@@ -121,9 +125,10 @@ func (board *Board) MoveTiles() {
 							if c+1 < board.CellCount && board.Array[c+1][r].Value == 0 {
 								board.Array[c+1][r].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
-							} else if c+1 < board.CellCount && board.Array[c+1][r].Value == board.Array[c][r].Value {
+							} else if c+1 < board.CellCount && board.Array[c+1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c+1][r].Value *= 2
 								board.Array[c][r].Value = 0
+								board.Array[c+1][r].CanAdd = false
 							}
 						}
 					case MotionDown:
@@ -131,9 +136,10 @@ func (board *Board) MoveTiles() {
 							if r+1 < board.CellCount && board.Array[c][r+1].Value == 0 {
 								board.Array[c][r+1].Value = board.Array[c][r].Value
 								board.Array[c][r].Value = 0
-							} else if r+1 < board.CellCount && board.Array[c][r+1].Value == board.Array[c][r].Value {
+							} else if r+1 < board.CellCount && board.Array[c][r+1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c][r+1].Value *= 2
 								board.Array[c][r].Value = 0
+								board.Array[c][r+1].CanAdd = false
 							}
 						}
 					}
