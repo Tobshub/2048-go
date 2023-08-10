@@ -40,7 +40,7 @@ func (b *Board) Init() {
 	for c := 0; c < b.CellCount; c++ {
 		new_array[c] = make([]Tile, b.CellCount)
 		for r := 0; r < b.CellCount; r++ {
-			if (c == 1 && r == 1) || (c == 3 && r == 3) || (c == 1 && r == 3) {
+			if (c == 1 && r == 1) || (c == 3 && r == 3) /** || (c == 1 && r == 3) */ {
 				new_array[c][r] = Tile{Value: 2, CanAdd: true}
 			} else {
 				new_array[c][r] = Tile{Value: 0, CanAdd: true}
