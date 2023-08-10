@@ -43,7 +43,7 @@ func DrawGame() {
 
 	if HasLost {
 		game_over_text := "GAME OVER! YOU HAVE NO MORE MOVES."
-		restart_instructions := "press [ENTER] to restart."
+		restart_instructions := "press [R] to restart."
 
 		rl.DrawText(game_over_text, SCREEN_WIDTH/2-rl.MeasureText(game_over_text, large_font_size)/2, SCREEN_HEIGHT/2-large_font_size, large_font_size, rl.Red)
 		rl.DrawText(restart_instructions, SCREEN_WIDTH/2-rl.MeasureText(restart_instructions, small_font_size)/2, SCREEN_HEIGHT/2+small_font_size, small_font_size, rl.DarkGray)
@@ -51,16 +51,16 @@ func DrawGame() {
 }
 
 func UpdateGame() {
-	if HasLost {
-		if rl.IsKeyPressed(rl.KeyEnter) {
-			InitGame()
+	if rl.IsKeyPressed(rl.KeyR) {
+		InitGame()
+	} else if rl.IsKeyPressed(rl.KeyU) {
+		BOARD.UndoState()
+		if HasLost {
+			HasLost = false
 		}
-	} else {
-		if rl.IsKeyPressed(rl.KeyR) {
-			InitGame()
-		} else if rl.IsKeyPressed(rl.KeyU) {
-			BOARD.UndoState()
-		}
+	}
+
+	if !HasLost {
 		BOARD.Update()
 
 		if BOARD.Motion != MotionNone {
