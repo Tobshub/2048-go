@@ -9,9 +9,9 @@ import (
 
 const (
 	padding         = 200
-	board_thickness = 4
+	board_thickness = 8
 
-	cell_thickness = 2
+	cell_thickness = 4
 )
 
 var (
@@ -285,10 +285,10 @@ func (board *Board) Draw() {
 	x := float32(SCREEN_WIDTH/2 - BOARD_SIZE/2)
 	y := float32(SCREEN_HEIGHT/2 - BOARD_SIZE/2)
 
-	board_rect := rl.NewRectangle(x, y, float32(BOARD_SIZE), float32(BOARD_SIZE))
+	// board_rect := rl.NewRectangle(x, y, float32(BOARD_SIZE), float32(BOARD_SIZE))
 
 	// draw board
-	rl.DrawRectangleLinesEx(board_rect, board_thickness, rl.Black)
+	rl.DrawRectangle(int32(x), int32(y), BOARD_SIZE, BOARD_SIZE, rl.Gray)
 
 	cell_size := float32(BOARD_SIZE-board_thickness/4) / float32(board.CellCount) // account for board borders
 	cell_border_offset := float32(cell_thickness) / 8
