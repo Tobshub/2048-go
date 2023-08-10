@@ -264,7 +264,16 @@ func (board *Board) UndoState() {
 	if saved_len > 0 {
 		board.Array = board.SavedStates[saved_len-1]
 		board.SavedStates = board.SavedStates[:saved_len-1]
-		board.Draw()
+	}
+
+	board.Motion = MotionNone
+
+	// revert score
+	Score = 0
+	for c := 0; c < board.CellCount; c++ {
+		for r := 0; r < board.CellCount; r++ {
+			Score += board.Array[c][r].Value
+		}
 	}
 }
 
