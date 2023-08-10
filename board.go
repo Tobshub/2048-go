@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	padding         = 200
+	padding         = 240
 	board_thickness = 8
 
 	cell_thickness = 4

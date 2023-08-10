@@ -8,7 +8,7 @@ import (
 
 const (
 	SCREEN_WIDTH  = 800
-	SCREEN_HEIGHT = 640
+	SCREEN_HEIGHT = 680
 
 	large_font_size  = 36
 	medium_font_size = 28
