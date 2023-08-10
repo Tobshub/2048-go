@@ -81,8 +81,6 @@ func (board *Board) SpawnTile() {
 		r := empty_cell_idx[rand_empty_cell_idx][1]
 
 		board.Array[c][r].Value = int(spawn_val)
-	} else {
-		HasLost = true
 	}
 }
 
@@ -95,6 +93,23 @@ func (board *Board) MoveTiles() {
 		if tile_did_move {
 			board.SpawnTile()
 			tile_did_move = false
+		} else {
+			var empty_cell_idx [][]int = [][]int{} // []c,r
+
+			for c := 0; c < board.CellCount; c++ {
+				for r := 0; r < board.CellCount; r++ {
+					// filter empty cells
+					if board.Array[c][r].Value == 0 {
+						empty_cell_idx = append(empty_cell_idx, []int{c, r})
+					}
+				}
+			}
+
+			empty_cell_count := len(empty_cell_idx)
+
+			if empty_cell_count == 0 {
+				HasLost = !board.CheckHasMoves()
+			}
 		}
 	} else {
 		move_count++
@@ -174,6 +189,28 @@ func (board *Board) MoveTiles() {
 	}
 }
 
+// check around tile
+func (board *Board) CheckHasMoves() bool {
+	for c := 0; c < board.CellCount; c++ {
+		for r := 0; r < board.CellCount; r++ {
+			tile_val := board.Array[c][r].Value
+			if c > 0 && board.Array[c-1][r].Value == tile_val {
+				return true
+			}
+			if c < board.CellCount-1 && board.Array[c+1][r].Value == tile_val {
+				return true
+			}
+			if r > 0 && board.Array[c][r-1].Value == tile_val {
+				return true
+			}
+			if r < board.CellCount-1 && board.Array[c][r+1].Value == tile_val {
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func (board *Board) Update() {
 	if board.Motion == MotionNone {
 		switch rl.GetKeyPressed() {
@@ -217,13 +254,4 @@ func (board *Board) Draw() {
 			}
 		}
 	}
-}
-
-func DrawTileInCell(tile *Tile, cell_x float32, cell_y float32, cell_size float32, cell_border_offset float32) {
-	tile_offset := cell_border_offset * 4
-
-	tile.X = cell_x + tile_offset
-	tile.Y = cell_y + tile_offset
-
-	tile.Draw(cell_size - tile_offset*3)
 }

@@ -56,3 +56,12 @@ func GetTileColor(val int) rl.Color {
 	}
 	return color
 }
+
+func DrawTileInCell(tile *Tile, cell_x float32, cell_y float32, cell_size float32, cell_border_offset float32) {
+	tile_offset := cell_border_offset * 4
+
+	tile.X = cell_x + tile_offset
+	tile.Y = cell_y + tile_offset
+
+	tile.Draw(cell_size - tile_offset*3)
+}
