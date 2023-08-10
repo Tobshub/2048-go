@@ -108,8 +108,8 @@ func (board *Board) MoveTiles() {
 					case MotionLeft:
 						{
 							if c-1 >= 0 && board.Array[c-1][r].Value == 0 {
-								board.Array[c-1][r].Value = board.Array[c][r].Value
-								board.Array[c][r].Value = 0
+								board.Array[c-1][r] = board.Array[c][r]
+								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
 							} else if c-1 >= 0 && board.Array[c-1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c-1][r].Value *= 2
@@ -121,8 +121,8 @@ func (board *Board) MoveTiles() {
 					case MotionUp:
 						{
 							if r-1 >= 0 && board.Array[c][r-1].Value == 0 {
-								board.Array[c][r-1].Value = board.Array[c][r].Value
-								board.Array[c][r].Value = 0
+								board.Array[c][r-1] = board.Array[c][r]
+								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
 							} else if r-1 >= 0 && board.Array[c][r-1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c][r-1].Value *= 2
@@ -144,8 +144,8 @@ func (board *Board) MoveTiles() {
 					case MotionRight:
 						{
 							if c+1 < board.CellCount && board.Array[c+1][r].Value == 0 {
-								board.Array[c+1][r].Value = board.Array[c][r].Value
-								board.Array[c][r].Value = 0
+								board.Array[c+1][r] = board.Array[c][r]
+								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
 							} else if c+1 < board.CellCount && board.Array[c+1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c+1][r].Value *= 2
@@ -157,8 +157,8 @@ func (board *Board) MoveTiles() {
 					case MotionDown:
 						{
 							if r+1 < board.CellCount && board.Array[c][r+1].Value == 0 {
-								board.Array[c][r+1].Value = board.Array[c][r].Value
-								board.Array[c][r].Value = 0
+								board.Array[c][r+1] = board.Array[c][r]
+								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
 							} else if r+1 < board.CellCount && board.Array[c][r+1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
 								board.Array[c][r+1].Value *= 2
