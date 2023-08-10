@@ -89,7 +89,7 @@ func (board *Board) SpawnTile() {
 var move_count = 0
 
 func (board *Board) MoveTiles() {
-	if move_count > board.CellCount {
+	if move_count >= board.CellCount-1 {
 		move_count = 0
 		board.Motion = MotionNone
 		if tile_did_move {
