@@ -33,6 +33,8 @@ type Board struct {
 	CellCount int // number of rows, same as number of cols
 	Array     [][]Tile
 	Motion    BoardMotion
+
+	SavedStates [][][]Tile
 }
 
 func (b *Board) Init() {
@@ -227,6 +229,34 @@ func (board *Board) Update() {
 		case rl.KeyDown:
 			board.Motion = MotionDown
 		}
+
+		if board.Motion != MotionNone {
+			board.SaveState()
+		}
+	}
+}
+
+func (board *Board) SaveState() {
+	board_copy := make([][]Tile, board.CellCount)
+
+	// deep copy ???
+	for c := 0; c < board.CellCount; c++ {
+		for r := 0; r < board.CellCount; r++ {
+			board_copy[c] = make([]Tile, board.CellCount)
+			copy(board_copy[c], board.Array[c])
+		}
+	}
+
+	board.SavedStates = append(board.SavedStates, board_copy)
+}
+
+func (board *Board) UndoState() {
+	saved_len := len(board.SavedStates)
+
+	if saved_len > 0 {
+		board.Array = board.SavedStates[saved_len-1]
+		board.SavedStates = board.SavedStates[:saved_len-1]
+		board.Draw()
 	}
 }
 

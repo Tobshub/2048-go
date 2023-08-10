@@ -58,6 +58,8 @@ func UpdateGame() {
 	} else {
 		if rl.IsKeyPressed(rl.KeyR) {
 			InitGame()
+		} else if rl.IsKeyPressed(rl.KeyU) {
+			BOARD.UndoState()
 		}
 		BOARD.Update()
 
