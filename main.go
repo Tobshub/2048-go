@@ -39,6 +39,8 @@ func DrawGame() {
 	rl.DrawText(fmt.Sprintf("Hi-Score: %d", HiScore), 10, 10, medium_font_size, rl.DarkGray)
 	rl.DrawText(fmt.Sprintf("Score: %d", Score), 10, 10+medium_font_size+5, medium_font_size, rl.DarkGray)
 
+	rl.DrawText("Pres [R] to restart", 10, SCREEN_HEIGHT-small_font_size*2, small_font_size, rl.DarkGray)
+
 	if HasLost {
 		game_over_text := "GAME OVER! YOU HAVE NO MORE MOVES."
 		restart_instructions := "press [ENTER] to restart."
