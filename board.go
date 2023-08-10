@@ -132,7 +132,7 @@ func (board *Board) MoveTiles() {
 								board.Array[c-1][r] = board.Array[c][r]
 								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
-							} else if c-1 >= 0 && board.Array[c-1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
+							} else if c-1 >= 0 && CheckCanAdd(&board.Array[c][r], &board.Array[c-1][r]) {
 								board.Array[c-1][r].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c-1][r].CanAdd = false
@@ -145,7 +145,7 @@ func (board *Board) MoveTiles() {
 								board.Array[c][r-1] = board.Array[c][r]
 								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
-							} else if r-1 >= 0 && board.Array[c][r-1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
+							} else if r-1 >= 0 && CheckCanAdd(&board.Array[c][r], &board.Array[c][r-1]) {
 								board.Array[c][r-1].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c][r-1].CanAdd = false
@@ -168,7 +168,7 @@ func (board *Board) MoveTiles() {
 								board.Array[c+1][r] = board.Array[c][r]
 								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
-							} else if c+1 < board.CellCount && board.Array[c+1][r].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
+							} else if c+1 < board.CellCount && CheckCanAdd(&board.Array[c][r], &board.Array[c+1][r]) {
 								board.Array[c+1][r].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c+1][r].CanAdd = false
@@ -181,7 +181,7 @@ func (board *Board) MoveTiles() {
 								board.Array[c][r+1] = board.Array[c][r]
 								board.Array[c][r] = Tile{Value: 0, CanAdd: true}
 								tile_did_move = true
-							} else if r+1 < board.CellCount && board.Array[c][r+1].Value == board.Array[c][r].Value && board.Array[c][r].CanAdd {
+							} else if r+1 < board.CellCount && CheckCanAdd(&board.Array[c][r], &board.Array[c][r+1]) {
 								board.Array[c][r+1].Value *= 2
 								board.Array[c][r].Value = 0
 								board.Array[c][r+1].CanAdd = false
@@ -192,6 +192,14 @@ func (board *Board) MoveTiles() {
 				}
 			}
 		}
+	}
+}
+
+func CheckCanAdd(tile1 *Tile, tile2 *Tile) bool {
+	if tile1.CanAdd && tile2.CanAdd && tile1.Value == tile2.Value {
+		return true
+	} else {
+		return false
 	}
 }
 
