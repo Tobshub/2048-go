@@ -88,6 +88,10 @@ func (board *Board) SpawnTile() {
 
 		board.Array[c][r].Value = int(spawn_val)
 	}
+
+	if empty_cell_count <= 1 {
+		HasLost = !board.CheckHasMoves()
+	}
 }
 
 var move_count = 0
