@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	padding         = 100
+	padding         = 200
 	board_thickness = 4
 
 	cell_thickness = 2
@@ -64,6 +64,10 @@ func (board *Board) SpawnTile() {
 			board.Array[c][r].CanAdd = true
 			// make score sum of all tiles
 			Score += board.Array[c][r].Value
+
+			if Score > HiScore {
+				HiScore = Score
+			}
 
 			// filter empty cells
 			if board.Array[c][r].Value == 0 {

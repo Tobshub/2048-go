@@ -18,7 +18,9 @@ const (
 var BOARD Board
 
 var (
-	Score   int
+	HiScore int = 0
+	Score   int = 0
+
 	HasLost bool = false
 )
 
@@ -34,7 +36,8 @@ func InitGame() {
 
 func DrawGame() {
 	BOARD.Draw()
-	rl.DrawText(fmt.Sprintf("Score: %d", Score), 10, 10, medium_font_size, rl.DarkGray)
+	rl.DrawText(fmt.Sprintf("Hi-Score: %d", HiScore), 10, 10, medium_font_size, rl.DarkGray)
+	rl.DrawText(fmt.Sprintf("Score: %d", Score), 10, 10+medium_font_size+5, medium_font_size, rl.DarkGray)
 
 	if HasLost {
 		game_over_text := "GAME OVER! YOU HAVE NO MORE MOVES."
@@ -51,6 +54,9 @@ func UpdateGame() {
 			InitGame()
 		}
 	} else {
+		if rl.IsKeyPressed(rl.KeyR) {
+			InitGame()
+		}
 		BOARD.Update()
 
 		if BOARD.Motion != MotionNone {
