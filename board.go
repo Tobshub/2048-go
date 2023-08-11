@@ -57,26 +57,16 @@ func (board *Board) SpawnTile() {
 
 	spawn_val := 2 * math.Pow(2, pow)
 
-	var empty_cell_idx [][]int = [][]int{} // []c,r
-
 	Score = 0
-	for c := 0; c < board.CellCount; c++ {
-		for r := 0; r < board.CellCount; r++ {
-			// reset CanAdd for all tiles
-			board.Array[c][r].CanAdd = true
-			// make score sum of all tiles
-			Score += board.Array[c][r].Value
 
-			if Score > HiScore {
-				HiScore = Score
-			}
+	empty_cell_idx := board.filterEmptyCells(func(tile *Tile) {
+		tile.CanAdd = true
+		Score += tile.Value
 
-			// filter empty cells
-			if board.Array[c][r].Value == 0 {
-				empty_cell_idx = append(empty_cell_idx, []int{c, r})
-			}
+		if Score > HiScore {
+			HiScore = Score
 		}
-	}
+	})
 
 	empty_cell_count := len(empty_cell_idx)
 
@@ -94,6 +84,23 @@ func (board *Board) SpawnTile() {
 	}
 }
 
+func (board *Board) filterEmptyCells(action func(*Tile)) [][]int {
+	var empty_cell_idx [][]int = [][]int{} // []c,r
+
+	Score = 0
+	for c := 0; c < board.CellCount; c++ {
+		for r := 0; r < board.CellCount; r++ {
+			action(&board.Array[c][r])
+			// filter empty cells
+			if board.Array[c][r].Value == 0 {
+				empty_cell_idx = append(empty_cell_idx, []int{c, r})
+			}
+		}
+	}
+
+	return empty_cell_idx
+}
+
 var move_count = 0
 
 func (board *Board) MoveTiles() {
@@ -104,16 +111,7 @@ func (board *Board) MoveTiles() {
 			board.SpawnTile()
 			tile_did_move = false
 		} else {
-			var empty_cell_idx [][]int = [][]int{} // []c,r
-
-			for c := 0; c < board.CellCount; c++ {
-				for r := 0; r < board.CellCount; r++ {
-					// filter empty cells
-					if board.Array[c][r].Value == 0 {
-						empty_cell_idx = append(empty_cell_idx, []int{c, r})
-					}
-				}
-			}
+			empty_cell_idx := board.filterEmptyCells(func(tile *Tile) {})
 
 			empty_cell_count := len(empty_cell_idx)
 
