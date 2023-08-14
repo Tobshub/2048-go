@@ -23,6 +23,11 @@ func (tile *Tile) Draw(size float32) {
 
 	val := fmt.Sprintf("%d", tile.Value)
 	font_size := int32(42)
+
+	for float32(rl.MeasureText(val, font_size)) > size {
+		font_size -= 4
+	}
+
 	x_offset := int32(size/2) - rl.MeasureText(val, font_size)/2
 	y_offset := int32(size/2) - font_size/2
 
