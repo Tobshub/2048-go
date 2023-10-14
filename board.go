@@ -250,10 +250,8 @@ func (board *Board) SaveState() {
 
 	// deep copy ???
 	for c := 0; c < board.CellCount; c++ {
-		for r := 0; r < board.CellCount; r++ {
-			board_copy[c] = make([]Tile, board.CellCount)
-			copy(board_copy[c], board.Array[c])
-		}
+		board_copy[c] = make([]Tile, board.CellCount)
+		copy(board_copy[c], board.Array[c])
 	}
 
 	board.SavedStates = append(board.SavedStates, board_copy)
