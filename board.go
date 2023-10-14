@@ -87,7 +87,6 @@ func (board *Board) SpawnTile() {
 func (board *Board) filterEmptyCells(action func(*Tile)) [][]int {
 	var empty_cell_idx [][]int = [][]int{} // []c,r
 
-	Score = 0
 	for c := 0; c < board.CellCount; c++ {
 		for r := 0; r < board.CellCount; r++ {
 			action(&board.Array[c][r])
