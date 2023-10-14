@@ -7,7 +7,7 @@ func main() {
 
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "2048")
 
-	rl.SetWindowMinSize(400, 400)
+	rl.SetWindowMinSize(500, 480)
 	rl.SetTargetFPS(30)
 
 	InitGame()

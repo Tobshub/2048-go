@@ -18,10 +18,7 @@ const (
 	small_font_size  = 24
 )
 
-var (
-	GameSettings Settings
-	BOARD        Board
-)
+var BOARD Board
 
 var (
 	HiScore int = 0
@@ -33,8 +30,14 @@ var (
 func InitGame() {
 	Score = 0
 	HasLost = false
+	cell_count := BOARD.CellCount
+	if cell_count < 4 {
+		cell_count = 4
+	} else if cell_count > 10 {
+		cell_count = 10
+	}
 	BOARD = Board{
-		CellCount: 4,
+		CellCount: cell_count,
 		Motion:    MotionNone,
 	}
 	BOARD.Init()
@@ -45,8 +48,8 @@ func DrawGame() {
 	rl.DrawText(fmt.Sprintf("Hi-Score: %d", HiScore), 10, 10, medium_font_size, rl.DarkGray)
 	rl.DrawText(fmt.Sprintf("Score: %d", Score), 10, 10+medium_font_size+5, medium_font_size, rl.DarkGray)
 
-	rl.DrawText("Restart: [R]", 10, SCREEN_HEIGHT-small_font_size*4, small_font_size, rl.DarkGray)
-	rl.DrawText("Settings: [S]", 10, SCREEN_HEIGHT-small_font_size*2, small_font_size, rl.DarkGray)
+	rl.DrawText("Restart: [R]", 10, SCREEN_HEIGHT-small_font_size*2, small_font_size, rl.DarkGray)
+	rl.DrawText("Change Cell Count: [A/X]", 10, SCREEN_HEIGHT-small_font_size*3, small_font_size, rl.DarkGray)
 
 	if HasLost {
 		game_over_text := "GAME OVER! YOU HAVE NO MORE MOVES."
@@ -77,8 +80,12 @@ func UpdateGame() {
 		if HasLost {
 			HasLost = false
 		}
-	} else if rl.IsKeyPressed(rl.KeyS) {
-		ToggleSettings(&GameSettings)
+	} else if rl.IsKeyPressed(rl.KeyA) {
+		BOARD.CellCount += 1
+		InitGame()
+	} else if rl.IsKeyPressed(rl.KeyX) {
+		BOARD.CellCount -= 1
+		InitGame()
 	}
 
 	if !HasLost {
