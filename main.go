@@ -3,8 +3,11 @@ package main
 import rl "github.com/gen2brain/raylib-go/raylib"
 
 func main() {
+	rl.SetConfigFlags(rl.FlagWindowResizable)
+
 	rl.InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "2048")
 
+	rl.SetWindowMinSize(400, 400)
 	rl.SetTargetFPS(30)
 
 	InitGame()

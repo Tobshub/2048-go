@@ -282,8 +282,6 @@ func (board *Board) Draw() {
 	x := float32(SCREEN_WIDTH/2 - BOARD_SIZE/2)
 	y := float32(SCREEN_HEIGHT/2 - BOARD_SIZE/2)
 
-	// board_rect := rl.NewRectangle(x, y, float32(BOARD_SIZE), float32(BOARD_SIZE))
-
 	// draw board
 	rl.DrawRectangle(int32(x), int32(y), BOARD_SIZE, BOARD_SIZE, rl.Gray)
 

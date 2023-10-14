@@ -18,8 +18,11 @@ type Tile struct {
 }
 
 func (tile *Tile) Draw(size float32) {
-	tile_color := GetTileColor(tile.Value)
-	rl.DrawRectangleV(rl.NewVector2(tile.X, tile.Y), rl.NewVector2(size, size), tile_color)
+	rl.DrawRectangleV(
+		rl.NewVector2(tile.X, tile.Y),
+		rl.NewVector2(size, size),
+		GetTileColor(tile.Value),
+	)
 
 	val := fmt.Sprintf("%d", tile.Value)
 	font_size := int32(42)
